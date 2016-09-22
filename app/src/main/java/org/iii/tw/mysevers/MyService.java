@@ -2,10 +2,13 @@ package org.iii.tw.mysevers;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
 public class MyService extends Service {
+    private MediaPlayer mp;
+
     public MyService() {
     }
 
@@ -18,18 +21,29 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("brad","onCreate");
+//        Log.d("brad","onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("brad","onStartCommand");
+//        Log.d("brad","onStartCommand");
+
+        mp = MediaPlayer.create(this,R.raw.Tony);
+
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("brad","onDestroy");
+//        Log.d("brad","onDestroy");
+
+        if (mp != null){
+            if (mp.isPlaying() ){
+                mp.stop();
+            }
+            mp.release();
+            mp = null;
+        }
     }
 }
