@@ -25,6 +25,27 @@ public class MainActivity extends AppCompatActivity {
         receiver = new MyReceiver();
         IntentFilter file = new IntentFilter("Tony.mp3");
         registerReceiver(receiver,file);
+
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser){
+                    Intent it = new Intent(MainActivity.this,MyService.class);
+                    it.putExtra("skip",progress);
+                    sendBroadcast(it);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     public void test1(View v){
@@ -44,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 //            Log.d("brad", "got it");
             int len = intent.getIntExtra("len",-1);
+            int now = intent.getIntExtra("now",-1);
+            if (len != -1)seekbar.setMax(len);
+            if (now != -1)seekbar.setProgress(now);
             seekbar.setMax(len);
         }
     }

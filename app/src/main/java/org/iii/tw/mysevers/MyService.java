@@ -51,8 +51,14 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 //        Log.d("brad","onStartCommand");
 
-        mp.start();
-        timer.schedule(new MyTask(), 0, 500);
+        int skip = intent.getIntExtra("skip",-1);
+        if (skip == -1){
+            mp.start();
+            timer.schedule(new MyTask(), 0, 500);
+        }else {
+            mp.seekTo(skip);
+        }
+
 
         return super.onStartCommand(intent, flags, startId);
     }
